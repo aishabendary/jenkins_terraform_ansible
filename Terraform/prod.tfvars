@@ -2,7 +2,7 @@ region_name = "eu-east-1"
 
 server_type = "t2.micro"
 
-source_path_file = "aisha-private-key.pem"
+source_path_file = "./aisha-private-key.pem"
 
 destination_path_file = "/home/ubuntu/.ssh/id_rsa"
 

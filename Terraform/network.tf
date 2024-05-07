@@ -1,6 +1,6 @@
 module "network" {
 
-  source                = "network/"
+  source                = "./network/"
   vpc_cidr              = var.vpc_cidr
   private_subnet_cidr   = var.private_subnet_cidr
   private_subnet_cidr_2 = var.private_subnet_cidr_2
