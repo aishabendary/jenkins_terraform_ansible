@@ -48,6 +48,7 @@ pipeline {
                 error("Invalid workspace chosen. Please choose either dev or prod.")
             }
         }
+        
         stage('Terraform Plan: ${params.TERRAFORM_WORKSPACE}') {
             when {
                 expression {
@@ -63,6 +64,7 @@ pipeline {
                 }
             }
         }
+        
         stage('Terraform Apply') {
             when {
                 expression {
@@ -73,6 +75,7 @@ pipeline {
                 error("Invalid workspace chosen. Please choose either dev or prod.")
             }
         }
+        
         stage('Terraform Apply: ${params.TERRAFORM_WORKSPACE}') {
             when {
                 expression {
@@ -88,5 +91,15 @@ pipeline {
                 }
             }
         }
-    }
-}
+
+//         stage('destroy') {
+//             steps {
+//                 script {
+//                     dir('Terraform') {
+//                         sh "terraform destroy -auto-approve -var-file=${params.TERRAFORM_WORKSPACE}.tfvars"
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
