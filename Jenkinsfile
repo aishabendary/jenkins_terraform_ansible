@@ -14,7 +14,7 @@ pipeline {
         stage('Check and Create Workspace') {
             steps {
                 script {
-                    dir('terraform') {
+                    dir('Terraform') {
                         def workspace = params.TERRAFORM_WORKSPACE
                         def workspaceExists = sh(script: "terraform workspace list | grep -q '${workspace}'", returnStatus: true) == 0
                         
@@ -29,7 +29,7 @@ pipeline {
         stage('Terraform Init') {
             steps {
                 script {
-                    dir('terraform') {
+                    dir('Terraform') {
                         sh 'terraform init'
                     }
                 }
@@ -53,7 +53,7 @@ pipeline {
             }
             steps {
                 script {
-                    dir('terraform') {
+                    dir('Terraform') {
                         sh "terraform workspace select ${params.TERRAFORM_WORKSPACE}"
                         sh "terraform plan -var-file=${params.TERRAFORM_WORKSPACE}.tfvars"
                     }
@@ -78,7 +78,7 @@ pipeline {
         //     }
         //     steps {
         //         script {
-        //             dir('terraform') {
+        //             dir('Terraform') {
         //                 sh "terraform workspace select ${params.TERRAFORM_WORKSPACE}"
         //                 sh "terraform apply -auto-approve -var-file=${params.TERRAFORM_WORKSPACE}.tfvars"
         //             }
