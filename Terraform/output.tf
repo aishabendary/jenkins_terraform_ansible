@@ -1,5 +1,5 @@
 output "RDS_HOSTNAME" {
-  description = "Hostname of the RDS instance"
+  description = "Hostname of the RDS instance" 
   value       = aws_db_instance.my_rds.endpoint
 }
 

@@ -1,0 +1,33 @@
+pipeline {
+    agent {
+        node {
+            label 'private_slave'
+        }
+    }
+
+    environment {
+        RDS_HOSTNAME = credentials('RDS_HOSTNAME')
+        RDS_PASSWORD = credentials('RDS_PASSWORD')
+        RDS_PORT = credentials('RDS_PORT')
+        RDS_USERNAME = credentials('RDS_USERNAME')
+        REDIS_HOSTNAME = credentials('REDIS_HOSTNAME')
+        REDIS_PORT = credentials('REDIS_PORT')
+    }
+
+    stages {
+        stage('Preparation') {
+            steps {
+                git branch: 'rds_redis', url: 'https://github.com/mahmoud254/jenkins_nodejs_example.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh """
+                    docker build . -f dockerfile -t nodejs_jenkins
+                    docker run -d -p 3000:3000 --name nodejs_jenkins_ctr --env RDS_HOSTNAME --env RDS_USERNAME --env RDS_PASSWORD --env RDS_PORT --env REDIS_HOSTNAME --env REDIS_PORT nodejs_jenkins
+                    """
+            }
+        }
+    }
+}
