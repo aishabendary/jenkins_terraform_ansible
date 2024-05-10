@@ -48,6 +48,11 @@ variable "public_subnet_cidr" {
   description = "public subnet cidr"
 }
 
+variable "public_subnet_cidr_2" {
+  type        = string
+  description = "public subnet cidr_2"
+}
+
 
 
 

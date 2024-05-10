@@ -19,9 +19,3 @@ resource "aws_elasticache_cluster" "redis_cluster_1" {
   port                 = 6379
   security_group_ids = [aws_security_group.redis_sec_group.id]
 }
-
-
-
-
-
-

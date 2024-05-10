@@ -56,7 +56,6 @@ resource "aws_instance" "bastion_server" {
 }
 
 
-
 resource "aws_instance" "private_server" {
   ami             = data.aws_ami.ubuntu.id
   instance_type   = var.server_type

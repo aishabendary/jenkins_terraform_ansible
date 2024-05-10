@@ -1,7 +1,7 @@
 resource "random_password" "password" {
   length           = 16
   special          = true
-  override_special = "_%@"
+  override_special = "%@"
 }
 
 resource "aws_db_subnet_group" "subnet_group" {
@@ -29,4 +29,10 @@ resource "aws_db_instance" "my_rds" {
   db_subnet_group_name = aws_db_subnet_group.subnet_group.name
 
   skip_final_snapshot = true
+}
+
+
+resource "local_file" "rds_password_file" {
+  filename = "${path.module}/rds_password.txt"
+  content  = aws_db_instance.my_rds.password
 }
