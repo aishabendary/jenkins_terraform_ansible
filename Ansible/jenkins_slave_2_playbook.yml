@@ -1,0 +1,76 @@
+---
+- name: slave
+  hosts: all 
+  remote_user: ubuntu
+  become: yes
+  tasks:
+    - name: Create a directory if it does not exist
+      file:
+        path: /home/ubuntu/jenkins_home
+        state: directory
+        mode: '0777'
+
+    - name: update ubuntu repo and cache
+      apt:
+        update_cache: yes
+
+    - name: install java
+      apt:
+        name: openjdk-11-jre
+        state: present
+    
+    - name: Install aptitude
+      apt:
+        name: aptitude
+        state: latest
+        update_cache: true
+
+    - name: Install required system packages
+      apt:
+        pkg:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+          - python3-pip
+          - virtualenv
+          - python3-setuptools
+        state: latest
+        update_cache: true
+
+    - name: Import Docker GPG Key from Local File
+      apt_key:
+        data: "{{ lookup('file', '/home/aisha/jenkins/jenkins_project/gpg') }}"
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu bionic stable
+        state: present
+
+    - name: Update apt and install docker-ce
+      apt:
+        update_cache: yes
+        name: docker-ce
+        state: latest
+
+
+    - name: Install Docker Module for Python
+      become: yes
+      apt:
+        name: python3-docker
+        state: present
+
+    - name: Add user to docker group
+      user:
+        name: ubuntu 
+        groups: docker      
+        append: yes
+
+    - name: Set permissions
+      file:
+        path: /var/run/docker.sock
+        mode: '0777'
+
+
+

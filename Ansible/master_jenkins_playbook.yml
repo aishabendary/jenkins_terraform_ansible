@@ -1,0 +1,44 @@
+---
+- name: slave
+  hosts: all
+  remote_user: ubuntu
+  become: yes
+
+  tasks:
+    - name: yum update cache
+      yum:
+        update_cache: yes
+
+    - name: Download Long Term Jenkins release
+      get_url:
+        url: https://pkg.jenkins.io/redhat-stable/jenkins.repo
+        dest: /etc/yum.repos.d/jenkins.repo
+
+    - name: Import jenkins key from url
+      rpm_key:
+        state: present
+        key: https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+
+    - name: dnf update
+      dnf:
+        name: '*'
+        state: latest
+
+    - name: Install java
+      dnf:
+        name: java-17-amazon-corretto
+        state: present
+
+    - name: Install jenkins
+      dnf:
+        name: jenkins
+        state: latest
+
+    - name: daemon-reload to pick up config changes
+      ansible.builtin.systemd:
+        daemon_reload: yes
+
+    - name: Start jenkins
+      ansible.builtin.systemd:
+        name: jenkins
+        state: started
